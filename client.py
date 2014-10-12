@@ -18,7 +18,7 @@ with open('client_config.json') as clientConfigJSONFile:
   client = {'clientID': clientid,'clientEncryptionKey':clientkey} #Todo: server connections
 
 AESEncryptionKey = hashlib.sha256(client['clientEncryptionKey']).digest()
-AESEncryptionIV = urandom(16)     # Initialization vector: discussed later
+AESEncryptionIV = urandom(16)
 AESEncryptionMode = AES.MODE_CBC
 clientEncryptor = AES.new(AESEncryptionKey, AESEncryptionMode, IV=AESEncryptionIV)
 

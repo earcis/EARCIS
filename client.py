@@ -1,9 +1,8 @@
-from os import urandom
 from sys import exit
-import hashlib
-from Crypto.Cipher import AES
 import re
 import json
+import client_encrypt
+import client_decrypt
 
 with open('client_config.json') as clientConfigJSONFile:
   clientConfigJSONData = json.load(clientConfigJSONFile)
@@ -17,11 +16,6 @@ with open('client_config.json') as clientConfigJSONFile:
   #serverport = clientConfigJSONData['server_port']
   client = {'clientID': clientid,'clientEncryptionKey':clientkey} #Todo: server connections
 
-AESEncryptionKey = hashlib.sha256(client['clientEncryptionKey']).digest()
-AESEncryptionIV = urandom(16)     # Initialization vector: discussed later
-AESEncryptionMode = AES.MODE_CBC
-clientEncryptor = AES.new(AESEncryptionKey, AESEncryptionMode, IV=AESEncryptionIV)
-
-text = '1234567890123456' #Messages MUST be encrypted in block of 16!
-ciphertext = clientEncryptor.encrypt(text)
-print ciphertext
+  cptxt,IVIV,origlen = client_encrypt.encrypt(client['clientEncryptionKey'], "jadn3ui2jk23.4@$@#$#@3488329dk,x.,d.x.;[p['wd.ekmn23']]'")
+  clrtxt = client_decrypt.decrypt(client['clientEncryptionKey'],IVIV,origlen,cptxt)
+  print clrtxt

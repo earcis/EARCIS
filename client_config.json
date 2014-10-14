@@ -2,5 +2,6 @@
 "client_id": "c.shi@cshi.me",
 "client_secure_key": "SADJJDN3839E8I1SMXN9Q2s2P",
 "server_ip": "127.0.0.1",
-"server_port": "10086"
+"server_port": "10086",
+"persistent_client_hash": "43413cae1sbc1aabc63d5b0bc17728c90eae3e1d"
 }

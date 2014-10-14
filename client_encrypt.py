@@ -8,7 +8,7 @@ def encrypt(key, cleartext):
   clientMessage = cleartext
 
   AESEncryptionKeyHashed = hashlib.sha256(AESEncryptionKey).digest()
-  AESEncryptionIV = urandom(16)     # Initialization vector: discussed later
+  AESEncryptionIV = urandom(16)
   clientEncryptor = AES.new(AESEncryptionKeyHashed, AESEncryptionMode, IV=AESEncryptionIV)
 
   if (len(clientMessage) % 16 != 0):

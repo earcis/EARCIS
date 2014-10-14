@@ -1,6 +1,6 @@
 {
 "client_id": "c.shi@cshi.me",
 "client_secure_key": "SADJJDN3839E8I1SMXN9Q2s2P",
-"server_ip": "",
-"server_port": ""
+"server_ip": "127.0.0.1",
+"server_port": "10086"
 }

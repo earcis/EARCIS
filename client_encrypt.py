@@ -1,5 +1,6 @@
 import hashlib
 from Crypto.Cipher import AES
+from random import randint
 from os import urandom
 
 def encrypt(key, cleartext):
@@ -13,7 +14,7 @@ def encrypt(key, cleartext):
 
   if (len(clientMessage) % 16 != 0):
     clientMessageOriginalLength = len(clientMessage)
-    clientMessage = clientMessage + (16 - len(clientMessage) % 16) * '0'
+    clientMessage = clientMessage + (16 - len(clientMessage) % 16) * randint(0,10)
   else:
     clientMessageOriginalLength = len(clientMessage)
 

@@ -14,7 +14,7 @@ def encrypt(key, cleartext):
 
   if (len(clientMessage) % 16 != 0):
     clientMessageOriginalLength = len(clientMessage)
-    clientMessage = clientMessage + (16 - len(clientMessage) % 16) * randint(0,10)
+    clientMessage = clientMessage + (16 - len(clientMessage) % 16) * str(randint(0,10))
   else:
     clientMessageOriginalLength = len(clientMessage)
 

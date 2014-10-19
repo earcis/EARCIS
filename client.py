@@ -31,7 +31,7 @@ with open('client_config.json') as clientConfigJSONFile:
     noCheckServerCertificate = False
   serverip = client_utils.serverip_match(clientConfigJSONData['server_ip'])
   serverport = client_utils.serverport_match(int(clientConfigJSONData['server_port']))
-  client = {'clientID': clientid,'clientEncryptionKey':clientkey} #Todo: server connections
+  client = {'clientID': clientid,'clientEncryptionKey':clientkey}
   pseudoUsername = str(client['clientID'].split('@')[0])
   if clientConfigJSONData['persistent_client_hash'] == "":
     clientIDForHash = client['clientID']+sha1(urandom(10)).hexdigest()
@@ -136,7 +136,7 @@ while True:
 
       clientPushReturn = client_servercontact.parsingMessage(clientHashedID, recipientAddress, clientEncryptedMessage, clientEncryptedIV, clientMessageOL)
       clientPostReturn = client_servercontact.postMessage(clientPushReturn, serverip, serverport, noCheckServerCertificate)
-      
+
       if (clientPostReturn == 500):
         print "The server you are requesting is experiencing issues, you may consider changing server."
       if (clientPostReturn == 400):

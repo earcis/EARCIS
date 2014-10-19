@@ -23,6 +23,12 @@ with open('client_config.json') as clientConfigJSONFile:
   if not client_utils.client_checkkey(clientkey):
     print "Error: Currently, the maximum acceptable secure key length is 64 characters, without spaces. Minimum: 6."
     exit(0)
+  if (clientConfigJSONData['server_no_check_certificate'] == "true"):
+    noCheckServerCertificate = True
+    print "You opted to not check TLS server's certificate as per config, it may cause security concerns."
+    print
+  else:
+    noCheckServerCertificate = False
   serverip = client_utils.serverip_match(clientConfigJSONData['server_ip'])
   serverport = client_utils.serverport_match(int(clientConfigJSONData['server_port']))
   client = {'clientID': clientid,'clientEncryptionKey':clientkey} #Todo: server connections
@@ -129,7 +135,12 @@ while True:
         continue
 
       clientPushReturn = client_servercontact.parsingMessage(clientHashedID, recipientAddress, clientEncryptedMessage, clientEncryptedIV, clientMessageOL)
-      clientPostReturn = client_servercontact.postMessage(clientPushReturn, serverip, serverport)
+      clientPostReturn = client_servercontact.postMessage(clientPushReturn, serverip, serverport, noCheckServerCertificate)
+      print clientPushReturn;
+      if (clientPostReturn == 500):
+        print "The server you are requesting is experiencing issues, you may consider changing server."
+      if (clientPostReturn == 400):
+        print "Your request was not qualified by the server, some components of your message may be incorrect."
       if (clientPostReturn == 403):
         print "Server acknowledged your request, but refused to accept your message. This may due to you're sending messages too frequently."
       if (clientPostReturn == 200):

@@ -136,7 +136,7 @@ while True:
 
       clientPushReturn = client_servercontact.parsingMessage(clientHashedID, recipientAddress, clientEncryptedMessage, clientEncryptedIV, clientMessageOL)
       clientPostReturn = client_servercontact.postMessage(clientPushReturn, serverip, serverport, noCheckServerCertificate)
-      print clientPushReturn;
+      
       if (clientPostReturn == 500):
         print "The server you are requesting is experiencing issues, you may consider changing server."
       if (clientPostReturn == 400):

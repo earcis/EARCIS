@@ -1,10 +1,33 @@
 import json
 import requests
+from re import match
 from time import sleep
+from collections import OrderedDict
+import client_decrypt
 
-def messageUpdater(messageUpdateJSON, lastRequestPosition):
-    
-
+def messageUpdater(messageUpdateJSON, securekey, lastRequestPosition):
+    invalidMessageCounter = 0
+    messageJSON = json.loads(messageUpdateJSON, object_pairs_hook=OrderedDict)
+    if messageJSON["messagequantity"] == 50:
+        lastRequestPosition = lastRequestPosition + 50
+    else:
+        lastRequestPosition = 0
+    for messageitem in messageJSON["messages"]:
+        if match("^[A-Za-z0-9_-]+$", messageitem["sender"]) and (len(messageitem["sender"]) == 40):
+            messagetime = messageitem["messagetime"]
+            sender = messageitem["sender"]
+            messagebody = messageitem["messagebody"]
+            messageiv = messageitem["messageiv"]
+            messageol = int(messageitem["messageol"])
+            messagetext = client_decrypt.decrypt(securekey, messageiv, messageol, messagebody)
+            if messagetext == False:
+                invalidMessageCounter = invalidMessageCounter + 1
+            else:
+                print messagetime[11:],sender,"to you:",messagetext
+        else:
+            invalidMessageCounter = invalidMessageCounter + 1
+    print invalidMessageCounter,"messages received were invalid."
+    return lastRequestPosition
 
 def parsingMessage(clienthash, recipienthash, clientmessage, clientiv, clientmessageOL, serverpass):
     outboundMessage = {'recipient':recipienthash, 'sender':clienthash, 'messagebody': clientmessage, 'messageiv': clientiv, 'messagelength': clientmessageOL, 'serverpass': serverpass}
@@ -30,7 +53,7 @@ def postMessage(outboundPayload, serverip, serverport, nocheckcert):
         except requests.exceptions.ConnectionError:
             print "Connection refused by remote server, check if your settings are correct."
 
-def receiveMessage(clienthash, serverip, serverport, nocheckcert, serverpass):
+def receiveMessage(clienthash, serverip, serverport, nocheckcert, serverpass, clientkey):
     lastRequestPosition = 0
     receiverServerUrl = 'https://'+serverip+':'+str(serverport)+'/sender'
     receiverOutboundMessage = {'receiver': clienthash, 'serverpass': serverpass, 'lastposition': lastRequestPosition}
@@ -54,9 +77,13 @@ def receiveMessage(clienthash, serverip, serverport, nocheckcert, serverpass):
         if receiverPostRequest.status_code == 403:
             print "Server rejected your refresh request, it could be you are sending requests too frequently, or you used the wrong server password."
             break
+        if receiverPostRequest.status_code == 404:
+            sleep(3)
+            continue
         if receiverPostRequest.status_code != 200:
             print "Unknown request error, please retry or try a different server."
             break
-        messageUpdate = receiverPostRequest.json()
-        lastRequestPosition = messageUpdater(messageUpdate, lastRequestPosition)
+        if receiverPostRequest.status_code == 200:
+            messageUpdate = receiverPostRequest.json()
+            lastRequestPosition = messageUpdater(clientkey, messageUpdate, lastRequestPosition)
         sleep(3)

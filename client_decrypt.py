@@ -11,7 +11,10 @@ def decrypt(key, IV, originallength, ciphertext):
     AESEncryptionKeyHashed = hashlib.sha256(AESEncryptionKey).digest()
     clientDecryptor = AES.new(AESEncryptionKeyHashed, AESEncryptionMode, AESEncryptionIV)
     clearTextCut = len((16 - clientMessageOriginalLength % 16) * ' ')
-    clearText = clientDecryptor.decrypt(clientCipherText)
-    cutEnds = len(clearText) - clearTextCut
-    clearText = clearText[:cutEnds]
-    return clearText
+    try:
+        clearText = clientDecryptor.decrypt(clientCipherText)
+        cutEnds = len(clearText) - clearTextCut
+        clearText = clearText[:cutEnds]
+        return clearText
+    except:
+        return False

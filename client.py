@@ -5,6 +5,7 @@ import json
 from base64 import b64encode
 import socket
 from hashlib import sha1
+from threading import Thread
 import client_encrypt
 import client_decrypt
 import client_servercontact
@@ -77,6 +78,10 @@ while True:
         print pseudoUsername,"to",recipientAddress,":",
         clientNewMessage = raw_input()
 
+        #refreshThread = Thread(target = client_servercontact.receiveMessage(clientHashedID, serverip, serverport, noCheckServerCertificate, serverpass, client['clientEncryptionKey']))
+        #refreshThread
+        #needs to kickstart the thread somehow, after all settings are in position.
+
         if clientNewMessage == '/quit':
             recipientAddressSet = False
             print "Press Ctrl+D to exit program, enter a new recipient address to send a message to another user."
@@ -110,7 +115,7 @@ while True:
                 print "Incorrect /server usage. To change server: /server example.com:443 or /server 10.0.0.1:443"
                 break
             recipientAddressSet = False
-            serverIP = newServerIP
+            serverip = newServerIP
             serverport = newServerPort
             break
 

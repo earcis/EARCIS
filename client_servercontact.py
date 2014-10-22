@@ -56,18 +56,18 @@ def postMessage(outboundPayload, serverip, serverport, nocheckcert):
 def receiveMessage(clienthash, serverip, serverport, nocheckcert, serverpass, clientkey):
     lastRequestPosition = 0
     receiverServerUrl = 'https://'+serverip+':'+str(serverport)+'/sender'
-    receiverOutboundMessage = {'receiver': clienthash, 'serverpass': serverpass, 'lastposition': lastRequestPosition}
+    receiverOutboundMessage = json.dumps({'receiver': clienthash, 'serverpass': serverpass, 'lastposition': lastRequestPosition})
     receiverPostHeaders = {'content-type': 'application/json'}
     while True:
         if nocheckcert:
             try:
-                receiverPostRequest = requests.get(receiverServerUrl, params=receiverOutboundMessage, headers=receiverPostHeaders, verify=False)
+                receiverPostRequest = requests.post(receiverServerUrl, receiverOutboundMessage, headers=receiverPostHeaders, verify=False)
             except requests.exceptions.ConnectionError:
                 print "Connection refused by remote server, check if your settings are correct."
                 break
         elif not nocheckcert:
             try:
-                receiverPostRequest = requests.post(receiverServerUrl, params=receiverOutboundMessage, headers=receiverPostHeaders)
+                receiverPostRequest = requests.post(receiverServerUrl, receiverOutboundMessage, headers=receiverPostHeaders)
             except requests.exceptions.ConnectionError:
                 print "Connection refused by remote server, check if your settings are correct."
                 break

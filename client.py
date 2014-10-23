@@ -5,7 +5,7 @@ import json
 from base64 import b64encode
 import socket
 from hashlib import sha1
-from threading import Thread
+import threading
 import client_encrypt
 import client_decrypt
 import client_servercontact
@@ -57,6 +57,7 @@ with open('client_config.json') as clientConfigJSONFile:
 
 recipientAddressSet = False
 
+refresh_stop = threading.Event()
 while True:
     userCommand = False
     if not recipientAddressSet:
@@ -75,16 +76,16 @@ while True:
             print "Invalid recipient address, it should only contain numbers and letters."
 
     if recipientAddressSet == True:
+        refresh_stop.clear()
+        refreshThread = threading.Thread(target=client_servercontact.receiveMessage, args=(clientHashedID, serverip, serverport, noCheckServerCertificate, serverpass, client['clientEncryptionKey'], refresh_stop))
+        refreshThread.start()
         print pseudoUsername,"to",recipientAddress,":",
         clientNewMessage = raw_input()
-
-        #refreshThread = Thread(target = client_servercontact.receiveMessage(clientHashedID, serverip, serverport, noCheckServerCertificate, serverpass, client['clientEncryptionKey']))
-        #refreshThread
-        #needs to kickstart the thread somehow, after all settings are in position.
 
         if clientNewMessage == '/quit':
             recipientAddressSet = False
             print "Press Ctrl+D to exit program, enter a new recipient address to send a message to another user."
+            refresh_stop.set()
             continue
 
         while clientNewMessage.startswith('/server'):
@@ -117,6 +118,8 @@ while True:
             recipientAddressSet = False
             serverip = newServerIP
             serverport = newServerPort
+            refresh_stop.set()
+            print '\n'*40
             break
 
         if clientNewMessage.startswith('/hash'):
@@ -124,6 +127,7 @@ while True:
             clientIDForHash = client['clientID']+sha1(urandom(10)).hexdigest()
             clientHashedID = sha1(clientIDForHash).hexdigest()
             print "Your new address hash is",clientHashedID,". You will use it to send and receive messages on this session."
+            refresh_stop.set()
 
         while clientNewMessage.startswith('/key'):
             userCommand = True
@@ -137,6 +141,7 @@ while True:
             client['clientEncryptionKey'] = newKeyString[1]
             print '\n'*40
             print "New secure key accepted."
+            refresh_stop.set()
             break
 
         if (clientNewMessage.startswith('/')) and (userCommand == False): #Prevent random messages started with /
@@ -166,3 +171,4 @@ while True:
                 print "Server acknowledged your request, but refused to accept your message. This may due to you're sending messages too frequently. Or, maybe you didn't enter this server's password correctly."
             if (clientPostReturn == 200):
                 print "Sent."
+            refresh_stop.set()

@@ -56,7 +56,7 @@ def postMessage(outboundPayload, serverip, serverport, nocheckcert):
 def receiveMessage(clienthash, serverip, serverport, nocheckcert, serverpass, clientkey):
     lastRequestPosition = 0
     receiverServerUrl = 'https://'+serverip+':'+str(serverport)+'/sender'
-    receiverOutboundMessage = json.dumps({'receiver': clienthash, 'serverpass': serverpass, 'lastposition': lastRequestPosition})
+    receiverOutboundMessage = json.dumps({'receiver': clienthash, 'serverpass': serverpass, 'lastRequestPosition': lastRequestPosition})
     receiverPostHeaders = {'content-type': 'application/json'}
     while True:
         if nocheckcert:

@@ -1,3 +1,10 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+# The MIT License (MIT)
+# Copyright (c) 2014 icydoge icydoge@gmail.com
+# For full license details, see LICENSE.
+
 import json
 import requests
 import threading
@@ -9,7 +16,7 @@ from client_colours import bcolours
 import client_decrypt
 
 def receiveMessage(clienthash, serverip, serverport, nocheckcert, serverpass, clientkey, stop_event, clienttimezone):
-    lastRequestPosition = 0 #Todo: lastRequestPosition is flawed!!! It will be reset after thread reinitiates, need to use time based request position tracer instead. Possibily a dictionary of sender:requesttime.
+    lastRequestPosition = 0
     receiverServerUrl = 'https://'+serverip+':'+str(serverport)+'/sender'
     receiverPostHeaders = {'content-type': 'application/json'}
     while (not stop_event.is_set()):

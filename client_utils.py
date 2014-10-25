@@ -1,3 +1,10 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+# The MIT License (MIT)
+# Copyright (c) 2014 icydoge icydoge@gmail.com
+# For full license details, see LICENSE.
+
 from client_colours import bcolours
 
 def serverip_match(serverip):

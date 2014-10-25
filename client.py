@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # The MIT License (MIT)
-# Copyright (c) 2014 icydoge icydoge@gmail.com
+# Copyright (c) 2014 icydoge (icydoge@gmail.com)
 # For full license details, see LICENSE.
 
 import re
@@ -18,8 +18,6 @@ import client_decrypt
 import client_servercontact
 import client_utils
 from client_colours import bcolours
-
-#Requirements so far: Python 2.7, requests, PyCrypto.
 
 with open('client_config.json') as clientConfigJSONFile:
     clientConfigJSONData = json.load(clientConfigJSONFile)

@@ -10,6 +10,15 @@ Installation and Running
 
 Please note: EARCIS requires a server to relay messages, please find EARCIS-server at https://github.com/earcis/EARCIS-server
 
+EARCIS requires Python 2.7, [Requests](docs.python-requests.org) and [PyCrypto](https://pypi.python.org/pypi/pycrypto). Please install them before installing EARCIS. If you have pip installed, you can directly use:
+```sh
+pip install PyCrypto
+pip install requests
+```sh
+to install them.
+
+##### Clone git repo or download a zip file.
+
 ```sh
 git clone https://github.com/earcis/EARCIS.git EARCIS
 cd EARCIS
@@ -58,7 +67,7 @@ EARCIS utilises AES Cipher in block mode CBC.
 
 When your message is entered into EARCIS, EARCIS will generate a unique random Initialisation Vector(IV) and encrypt the message with your secure key. The encrypted message, along with its original length and IV (which will not help an attacker) are sent to the relay server. SSL/TLS encryption between you and the server will add an extra layer of security in transit. The randomly hashed address of you and your recepient will also be sent.
 
-The relay server then relays the message to the correct recepient according to the recepient address hash you provided. It also tells the recepient who sent it (your address hash). The server ensures that the clients don't need to connect at real time to send messages. (Client address hashes can be safely shared in insecure channels.)
+The relay server then relays the message to the correct recepient according to the recepient address hash you have provided. It also tells the recepient who sent it (your address hash). The server ensures that the clients don't need to connect at real time to send messages. (Client address hashes can be safely shared in insecure channels.)
 
 As the encryption and decryption processes are entirely done at client ends, the server (and anyone who attempts to wiretap it in transit) will **not** be able to tell the content of the message.
 

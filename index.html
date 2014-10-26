@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Earcis by earcis</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Earcis</h1>
+        <p>Encryption and Relational Communication in Space</p>
+
+        <p class="view"><a href="https://github.com/earcis/EARCIS">View the Project on GitHub <small>earcis/EARCIS</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/earcis/EARCIS/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/earcis/EARCIS/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/earcis/EARCIS">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="earcis" class="anchor" href="#earcis"><span class="octicon octicon-link"></span></a>EARCIS</h1>
+
+<p>Encryption and Relational Communications in Space</p>
+
+<p>EARCIS is a instant messaging tool for secured end-to-end communications through insecure connections.</p>
+
+<h2>
+<a name="installation-and-running" class="anchor" href="#installation-and-running"><span class="octicon octicon-link"></span></a>Installation and Running</h2>
+
+<p>Please note: EARCIS requires a server to relay messages, please find EARCIS-server at <a href="https://github.com/earcis/EARCIS-server">https://github.com/earcis/EARCIS-server</a></p>
+
+<p>EARCIS requires Python 2.7, <a href="http://docs.python-requests.org">Requests</a> and <a href="https://pypi.python.org/pypi/pycrypto">PyCrypto</a>. Please install them before installing EARCIS. If you have pip installed, you can directly use:</p>
+
+<div class="highlight highlight-sh"><pre>pip install PyCrypto
+pip install requests
+</pre></div>
+
+<p>to install them.</p>
+
+<h5>
+<a name="clone-git-repo-or-download-a-zip-file" class="anchor" href="#clone-git-repo-or-download-a-zip-file"><span class="octicon octicon-link"></span></a>Clone git repo or download a zip file.</h5>
+
+<div class="highlight highlight-sh"><pre>git clone https://github.com/earcis/EARCIS.git EARCIS
+<span class="nb">cd </span>EARCIS
+
+</pre></div>
+
+<h5>
+<a name="configure-earcis-by-editing-client_configjson" class="anchor" href="#configure-earcis-by-editing-client_configjson"><span class="octicon octicon-link"></span></a>Configure EARCIS by editing <code>client_config.json</code>:</h5>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+<span class="nt">"client_id"</span><span class="p">:</span> <span class="s2">"yourname@example.com"</span><span class="p">,</span> 
+<span class="nt">"client_secure_key"</span><span class="p">:</span> <span class="s2">"Your_Length_And_Complicated_Key_Here"</span><span class="p">,</span>
+<span class="nt">"client_time_zone"</span><span class="p">:</span> <span class="s2">"+8"</span><span class="p">,</span>
+<span class="nt">"server_ip"</span><span class="p">:</span> <span class="s2">"earcis.example.com"</span><span class="p">,</span>
+<span class="nt">"server_port"</span><span class="p">:</span> <span class="s2">"1008"</span><span class="p">,</span>
+<span class="nt">"server_password"</span><span class="p">:</span> <span class="s2">"PasswordOfServer"</span><span class="p">,</span>
+<span class="nt">"server_no_check_certificate"</span><span class="p">:</span> <span class="s2">"false"</span><span class="p">,</span>
+<span class="nt">"persistent_client_hash"</span><span class="p">:</span> <span class="s2">""</span>
+<span class="p">}</span>
+</pre></div>
+
+<p><strong>client_id</strong>: An email address in valid form here, as the seed for client address hashes.</p>
+
+<p><strong>client_secure_key</strong>: The secure key <strong>only</strong> shared between you and your partner in communication, should be shared beforehand in a secured way, it is the base EARCIS is operating on.</p>
+
+<p><strong>client_time_zone</strong>: Your timezone relative to UTC, for your convenience (time tagging) only. For example, Shanghai is UTC +8, then use "+8" in config.</p>
+
+<p><strong>server_ip</strong>: The domain or IP address of the server you are connecting to. For example, "earcis.example.com" or "200.100.50.1".</p>
+
+<p><strong>server_port</strong>: The port of the server you are connecting to, for example, "1008".</p>
+
+<p><strong>server_password</strong>: The password of the server you are connecting to. Unless server operator set otherwise, it is default to be empty ("").</p>
+
+<p><strong>server_no_check_certificate</strong>: Change it to "true" if you don't want to verify the server's SSL/TLS certificate, <strong>this is not recommended</strong>!</p>
+
+<p><strong>persistent_client_hash</strong>: By default, EARCIS will generate a new client address hash everytime at launch, and you can generate a new one during runtime. If you want EARCIS to stick to one address hash at launch, you can set a qualified hash here (you will still be able to generate a new one at runtime). Client address hashes can be safely shared in insecure channels. Note: although setting a persistent hash improves convenience, it may reduce your anonymity. </p>
+
+<h5>
+<a name="after-finished-editing-the-settings-you-can-launch-earcis" class="anchor" href="#after-finished-editing-the-settings-you-can-launch-earcis"><span class="octicon octicon-link"></span></a>After finished editing the settings, you can launch EARCIS:</h5>
+
+<div class="highlight highlight-sh"><pre>python client.py
+</pre></div>
+
+<p>Detailed instructions on runtime commands are displayed at launch.</p>
+
+<h2>
+<a name="how-does-it-work" class="anchor" href="#how-does-it-work"><span class="octicon octicon-link"></span></a>How does it work?</h2>
+
+<p>EARCIS utilises AES Cipher in block mode CBC. </p>
+
+<p>When your message is entered into EARCIS, EARCIS will generate a unique random Initialisation Vector(IV) and encrypt the message with your secure key. The encrypted message, along with its original length and IV (which will not help an attacker) are sent to the relay server. SSL/TLS encryption between you and the server will add an extra layer of security in transit. The randomly hashed address of you and your recepient will also be sent.</p>
+
+<p>The relay server then relays the message to the correct recepient according to the recepient address hash you have provided. It also tells the recepient who sent it (your address hash). The server ensures that the clients don't need to connect at real time to send messages. (Client address hashes can be safely shared in insecure channels.)</p>
+
+<p>As the encryption and decryption processes are entirely done at client ends, the server (and anyone who attempts to wiretap it in transit) will <strong>not</strong> be able to tell the content of the message.</p>
+
+<p>Note: To make regular message exchanges easier, the shared secure key you enter into <code>client_settings.json</code> <strong>will be kept in clear text in your local file</strong>, but you can always apply a new key with <code>/key</code> command.</p>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>EARCIS is licensed under The MIT License, you are free to modify and distribute it under restrictions defined by The MIT License. For full license details, see LICENSE.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/earcis">earcis</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>

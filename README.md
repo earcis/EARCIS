@@ -32,11 +32,11 @@ There is a public server for EARCIS from the author, you can use ```public.mouse
 ```json
 {
 "client_id": "yourname@example.com", 
-"client_secure_key": "Your_Length_And_Complicated_Key_Here",
+"client_secure_key": "Your_Lengthy_And_Complicated_Key_Here",
 "client_time_zone": "+8",
-"server_ip": "earcis.example.com",
-"server_port": "1008",
-"server_password": "PasswordOfServer",
+"server_ip": "public.mouselabs.uk",
+"server_port": "443",
+"server_password": "",
 "server_no_check_certificate": "false",
 "persistent_client_hash": ""
 }

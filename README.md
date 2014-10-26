@@ -27,6 +27,8 @@ cd EARCIS
 
 ##### Configure EARCIS by editing ```client_config.json```:
 
+There is a public server for EARCIS from the author, you can use ```public.mouselabs.uk``` with port ```443``` and empty password (```""```) for your config to begin with.
+
 ```json
 {
 "client_id": "yourname@example.com", 

@@ -14,7 +14,7 @@ EARCIS requires Python 2.7, [Requests](http://docs.python-requests.org) and [PyC
 ```sh
 pip install PyCrypto
 pip install requests
-```sh
+```
 to install them.
 
 ##### Clone git repo or download a zip file.

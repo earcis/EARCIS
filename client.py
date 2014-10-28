@@ -105,6 +105,7 @@ while True:
 
         while clientNewMessage.startswith('/server'):
             userCommand = True
+            emptyServerPassword = False
             newServerString = clientNewMessage.split(' ')
             if len(newServerString) == 0:
                 print bcolours.HEADER+"Current server:"+bcolours.ENDC,serverip
@@ -113,6 +114,8 @@ while True:
             if (len(newServerString) > 3 or len(newServerString) < 2):
                 print bcolours.WARNING+"Incorrect /server usage. To change server: /server example.com:443 or /server 10.0.0.1:443"+bcolours.ENDC
                 break
+            if len(newServerString) == 2:
+                    emptyServerPassword = True
             if len(newServerString) == 3:
                 if client_utils.serverpassword_match(newServerString[2]):
                     serverpass = newServerString[2]
@@ -131,6 +134,8 @@ while True:
                 print bcolours.WARNING+"Incorrect /server usage. To change server: /server example.com:443 or /server 10.0.0.1:443"+bcolours.ENDC
                 break
             recipientAddressSet = False
+            if (emptyServerPassword == True):
+                serverpass = ""
             serverip = newServerIP
             serverport = newServerPort
             refresh_stop.set()

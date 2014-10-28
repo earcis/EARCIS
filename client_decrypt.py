@@ -22,6 +22,10 @@ def decrypt(key, IV, originallength, ciphertext):
         clearText = clientDecryptor.decrypt(clientCipherText)
         cutEnds = len(clearText) - clearTextCut
         clearText = clearText[:cutEnds]
-        return clearText
+        if clearText.endswith("/msg"):
+            clearText = clearText[:(len(clearText)-4)]
+            return clearText
+        else:
+            return False
     except:
         return False

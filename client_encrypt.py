@@ -12,7 +12,7 @@ from os import urandom
 def encrypt(key, cleartext):
     AESEncryptionKey = key
     AESEncryptionMode = AES.MODE_CBC
-    clientMessage = cleartext
+    clientMessage = cleartext + "/msg"
 
     AESEncryptionKeyHashed = hashlib.sha256(AESEncryptionKey).digest()
     AESEncryptionIV = urandom(16)

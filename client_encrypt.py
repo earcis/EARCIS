@@ -7,7 +7,6 @@
 
 import hashlib
 from Crypto.Cipher import AES
-from random import randint
 from os import urandom
 
 def encrypt(key, cleartext):

@@ -5,8 +5,8 @@
 # Copyright (c) 2014 icydoge (icydoge@gmail.com)
 # For full license details, see LICENSE.
 
-from Crypto.Cipher import AES
 import hashlib
+from Crypto.Cipher import AES
 
 def decrypt(key, IV, originallength, ciphertext):
 

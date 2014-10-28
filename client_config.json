@@ -1,6 +1,6 @@
 {
 "client_id": "yourname@example.com",
-"client_secure_key": "Your_Length_And_Complicated_Key_Here",
+"client_secure_key": "Your_Lengthy_And_Complicated_Key_Here",
 "client_time_zone": "+8",
 "server_ip": "earcis.example.com",
 "server_port": "1008",

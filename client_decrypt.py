@@ -6,22 +6,22 @@
 # For full license details, see LICENSE.
 
 import hashlib
-from Crypto.Cipher import AES
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
-def decrypt(key, IV, originallength, ciphertext):
+def decrypt(key, IV, messageheader, ciphertext, messagetag):
 
     AESEncryptionKey = key
-    AESEncryptionMode = AES.MODE_CBC
     AESEncryptionIV = IV
-    clientMessageOriginalLength = originallength
     clientCipherText = ciphertext
+    AESEncryptionTag = messagetag
+    clientMessageHeader = str(messageheader)
+
     AESEncryptionKeyHashed = hashlib.sha256(AESEncryptionKey).digest()
-    clientDecryptor = AES.new(AESEncryptionKeyHashed, AESEncryptionMode, AESEncryptionIV)
-    clearTextCut = len((16 - clientMessageOriginalLength % 16) * ' ')
+    clientDecryptor = Cipher(algorithms.AES(AESEncryptionKeyHashed), modes.GCM(AESEncryptionIV, AESEncryptionTag), backend=default_backend()).decryptor()
     try:
-        clearText = clientDecryptor.decrypt(clientCipherText)
-        cutEnds = len(clearText) - clearTextCut
-        clearText = clearText[:cutEnds]
+        clientDecryptor.authenticate_additional_data(clientMessageHeader)
+        clearText = clientDecryptor.update(clientCipherText) + clientDecryptor.finalize()
         if clearText.endswith("/msg"):
             clearText = clearText[:(len(clearText)-4)]
             return clearText

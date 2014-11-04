@@ -9,7 +9,7 @@ import re
 import json
 import socket
 import threading
-from sys import exit
+from sys import exit, version_info
 from os import urandom
 from base64 import b64encode
 from hashlib import sha1
@@ -18,6 +18,13 @@ import client_decrypt
 import client_servercontact
 import client_utils
 from client_colours import bcolours
+
+if not ((version_info[0] == 2) and (version_info[1] >= 7)):
+    print bcolours.ERROR+"ERROR: EARCIS requires Python 2 with version 2.7.1 or higher. Check https://www.python.org/downloads/ for upgrading instructions."+bcolours.ENDC
+    exit(0)
+
+print bcolours.MESSAGE+"Welcome to EARCIS (Encryption and Relational Communications in Space) v0.2 by icydoge."
+print "See https://earcis.github.io/EARCIS/ for updates."+bcolours.ENDC
 
 with open('client_config.json') as clientConfigJSONFile:
     clientConfigJSONData = json.load(clientConfigJSONFile)
@@ -174,7 +181,7 @@ while True:
             print bcolours.WARNING+"Unknown command."+bcolours.ENDC
 
         if not userCommand:
-            clientEncryptedMessage, clientEncryptedIV, clientMessageOL = client_encrypt.encrypt(client['clientEncryptionKey'], clientNewMessage)
+            clientEncryptedMessage, clientEncryptedIV, clientMessageTag = client_encrypt.encrypt(client['clientEncryptionKey'], clientNewMessage, clientHashedID, recipientAddress)
             clientEncryptedMessage = b64encode(clientEncryptedMessage)
 
             if len(clientEncryptedMessage) > 1000:
@@ -184,8 +191,12 @@ while True:
             if len(clientEncryptedIV) > 24:
                 print bcolours.WARNING+"IV length error, please retry."+bcolours.ENDC
                 continue
+            clientMessageTag = b64encode(clientMessageTag)
+            if len(clientMessageTag) > 24:
+                print bcolours.WARNING+"IV length error, please retry."+bcolours.ENDC
+                continue
 
-            clientPushReturn = client_servercontact.parsingMessage(clientHashedID, recipientAddress, clientEncryptedMessage, clientEncryptedIV, clientMessageOL, serverpass)
+            clientPushReturn = client_servercontact.parsingMessage(clientHashedID, recipientAddress, clientEncryptedMessage, clientEncryptedIV, clientMessageTag, serverpass)
             clientPostReturn = client_servercontact.postMessage(clientPushReturn, serverip, serverport, noCheckServerCertificate)
 
             if (clientPostReturn == 500):

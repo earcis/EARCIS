@@ -47,10 +47,10 @@ def receiveMessage(clienthash, serverip, serverport, nocheckcert, serverpass, cl
             break
         if receiverPostRequest.status_code == 200:
             messageUpdate = receiverPostRequest.text
-            lastRequestPosition = messageUpdater(messageUpdate, clientkey, lastRequestPosition, clienttimezone)
+            lastRequestPosition = messageUpdater(messageUpdate, clientkey, lastRequestPosition, clienttimezone, clienthash)
         stop_event.wait(3)
 
-def messageUpdater(messageUpdateJSON, securekey, lastRequestPosition, clienttimezone):
+def messageUpdater(messageUpdateJSON, securekey, lastRequestPosition, clienttimezone, clienthash):
     invalidMessageCounter = 0
     messageCounter = 0
     try:
@@ -62,8 +62,9 @@ def messageUpdater(messageUpdateJSON, securekey, lastRequestPosition, clienttime
                 sender = messageitem["sender"]
                 messagebody = b64decode(messageitem["messagebody"])
                 messageiv = b64decode(messageitem["messageiv"])
-                messageol = int(messageitem["messageol"])
-                messagetext = client_decrypt.decrypt(securekey, messageiv, messageol, messagebody)
+                messageheader = str("S/"+str(sender)+"/R/"+str(clienthash))
+                messagetag = b64decode(messageitem["messagetag"])
+                messagetext = client_decrypt.decrypt(securekey, messageiv, messageheader, messagebody, messagetag)
                 if messagetext == False:
                     invalidMessageCounter = invalidMessageCounter + 1
                 else:
@@ -80,8 +81,8 @@ def messageUpdater(messageUpdateJSON, securekey, lastRequestPosition, clienttime
     except ValueError:
         return lastRequestPosition
 
-def parsingMessage(clienthash, recipienthash, clientmessage, clientiv, clientmessageOL, serverpass):
-    outboundMessage = {'recipient':recipienthash, 'sender':clienthash, 'messagebody': clientmessage, 'messageiv': clientiv, 'messagelength': clientmessageOL, 'serverpass': serverpass}
+def parsingMessage(clienthash, recipienthash, clientmessage, clientiv, clientmessagetag, serverpass):
+    outboundMessage = {'recipient':recipienthash, 'sender':clienthash, 'messagebody': clientmessage, 'messageiv': clientiv, 'messagetag': clientmessagetag, 'serverpass': serverpass}
     outboundMessageJSON = json.dumps(outboundMessage)
     return outboundMessageJSON
 

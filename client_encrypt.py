@@ -6,23 +6,19 @@
 # For full license details, see LICENSE.
 
 import hashlib
-from Crypto.Cipher import AES
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from os import urandom
 
-def encrypt(key, cleartext):
+def encrypt(key, cleartext, clienthash, recipienthash):
     AESEncryptionKey = key
-    AESEncryptionMode = AES.MODE_CBC
     clientMessage = cleartext + "/msg"
-
     AESEncryptionKeyHashed = hashlib.sha256(AESEncryptionKey).digest()
     AESEncryptionIV = urandom(16)
-    clientEncryptor = AES.new(AESEncryptionKeyHashed, AESEncryptionMode, IV=AESEncryptionIV)
 
-    if (len(clientMessage) % 16 != 0):
-        clientMessageOriginalLength = len(clientMessage)
-        clientMessage += ' ' * (16 - len(clientMessage) % 16)
-    else:
-        clientMessageOriginalLength = len(clientMessage)
+    clientEncryptor = Cipher(algorithms.AES(AESEncryptionKeyHashed), modes.GCM(AESEncryptionIV), backend=default_backend()).encryptor()
+    clientMessageHeader = "S/" + str(clienthash) + "/R/" + str(recipienthash)
+    clientEncryptor.authenticate_additional_data(clientMessageHeader)
+    ciphertext = clientEncryptor.update(clientMessage) + clientEncryptor.finalize()
 
-    ciphertext = clientEncryptor.encrypt(clientMessage)
-    return ciphertext, AESEncryptionIV, clientMessageOriginalLength
+    return ciphertext, AESEncryptionIV, clientEncryptor.tag

@@ -40,9 +40,9 @@
 
 <p>Please note: EARCIS requires a server to relay messages, please find EARCIS-server at <a href="https://github.com/earcis/EARCIS-server">https://github.com/earcis/EARCIS-server</a></p>
 
-<p>EARCIS requires Python 2.7, <a href="http://docs.python-requests.org">Requests</a> and <a href="https://pypi.python.org/pypi/pycrypto">PyCrypto</a>. Please install them before installing EARCIS. If you have pip installed, you can directly use:</p>
+<p>EARCIS requires Python 2.7, <a href="http://docs.python-requests.org">Requests</a> and <a href="https://cryptography.io/">cryptography</a>. Please install them before installing EARCIS. If you have pip installed, you can directly use:</p>
 
-<div class="highlight highlight-sh"><pre>pip install PyCrypto
+<div class="highlight highlight-sh"><pre>pip install cryptography
 pip install requests
 </pre></div>
 
@@ -100,7 +100,7 @@ There is a public server for EARCIS from the author, you can use <b>public.mouse
 
 <p>EARCIS utilises AES Cipher in block mode CBC. </p>
 
-<p>When your message is entered into EARCIS, EARCIS will generate a unique random Initialisation Vector(IV) and encrypt the message with your secure key. The encrypted message, along with its original length and IV (which will not help an attacker) are sent to the relay server. SSL/TLS encryption between you and the server will add an extra layer of security in transit. The randomly hashed address of you and your recepient will also be sent.</p>
+<p>When your message is entered into EARCIS, EARCIS will generate a unique random Initialisation Vector(IV) and encrypt the message with your secure key. The encrypted message, contains intended sender and recipient hash address as header, along with its GCM encryption tag and IV (which will not help an attacker) are sent to the relay server. SSL/TLS encryption between you and the server will add an extra layer of security in transit. The randomly hashed address of you and your recepient will also be sent.</p>
 
 <p>The relay server then relays the message to the correct recepient according to the recepient address hash you have provided. It also tells the recepient who sent it (your address hash). The server ensures that the clients don't need to connect at real time to send messages. (Client address hashes can be safely shared in insecure channels.)</p>
 
@@ -114,8 +114,7 @@ There is a public server for EARCIS from the author, you can use <b>public.mouse
 <p>EARCIS is licensed under The MIT License, you are free to modify and distribute it under restrictions defined by The MIT License. For full license details, see LICENSE.</p>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/earcis">earcis</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+        <p>This project is maintained by <a href="https://github.com/icydoge">icydoge</a></p>
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>

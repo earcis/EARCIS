@@ -71,7 +71,7 @@ Detailed instructions on runtime commands are displayed at launch.
 
 How does it work?
 ----
-EARCIS utilises AES Cipher in block mode CBC. 
+EARCIS utilises AES Cipher in Mode GCM. 
 
 When your message is entered into EARCIS, EARCIS will generate a unique random Initialisation Vector(IV) and encrypt the message with your secure key. The encrypted message, contains intended sender and recipient hash address as header, along with its GCM encryption tag and IV (which will not help an attacker) are sent to the relay server. SSL/TLS encryption between you and the server will add an extra layer of security in transit. The randomly hashed address of you and your recepient will also be sent.
 

@@ -98,7 +98,7 @@ There is a public server for EARCIS from the author, you can use <b>public.mouse
 <h2>
 <a name="how-does-it-work" class="anchor" href="#how-does-it-work"><span class="octicon octicon-link"></span></a>How does it work?</h2>
 
-<p>EARCIS utilises AES Cipher in block mode CBC. </p>
+<p>EARCIS utilises AES Cipher in Mode GCM. </p>
 
 <p>When your message is entered into EARCIS, EARCIS will generate a unique random Initialisation Vector(IV) and encrypt the message with your secure key. The encrypted message, contains intended sender and recipient hash address as header, along with its GCM encryption tag and IV (which will not help an attacker) are sent to the relay server. SSL/TLS encryption between you and the server will add an extra layer of security in transit. The randomly hashed address of you and your recepient will also be sent.</p>
 

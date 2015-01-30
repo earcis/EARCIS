@@ -18,7 +18,7 @@ Please note: EARCIS requires a server to relay messages, please find EARCIS-serv
 
 EARCIS requires Python 2.7, [Requests](http://docs.python-requests.org) and [cryptography](https://cryptography.io/). Please install them before installing EARCIS. If you have pip installed, you can directly use:
 ```sh
-pip install PyCrypto
+pip install requests
 pip install cryptography
 ```
 to install them.

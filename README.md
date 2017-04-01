@@ -33,7 +33,7 @@ cd EARCIS
 
 ##### Configure EARCIS by editing ```client_config.json```:
 
-There is a public server for EARCIS from the author, you can use ```public.mouselabs.uk``` with port ```443``` and empty password (```""```) for your config to begin with.
+~~There is a public server for EARCIS from the author, you can use ```public.mouselabs.uk``` with port ```443``` and empty password (```""```) for your config to begin with.~~ No more, sadly, due to no usage :P
 
 ```json
 {
@@ -63,7 +63,7 @@ There is a public server for EARCIS from the author, you can use ```public.mouse
 
 **persistent_client_hash**: By default, EARCIS will generate a new client address hash everytime at launch, and you can generate a new one during runtime. If you want EARCIS to stick to one address hash at launch, you can set a qualified hash here (you will still be able to generate a new one at runtime). Client address hashes can be safely shared in insecure channels. Note: although setting a persistent hash improves convenience, it may reduce your anonymity. 
 
-#####After finished editing the settings, you can launch EARCIS:
+##### After finished editing the settings, you can launch EARCIS:
 ```sh
 python client.py
 ```
